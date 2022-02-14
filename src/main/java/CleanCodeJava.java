@@ -8,12 +8,29 @@ import java.util.List;
 public class CleanCodeJava {
     public static void main(String[] args)
     {
-        List l = readFileInList("src/main/resources/datamunging/weather.dat");
+        List<String> l = readFileInList("src/main/resources/datamunging/weather.dat");
 
-        System.out.println(l.get(2));
+        int min = 0;
+        String dayNumberOfMin = null;
+
         for(int i=2; i< l.size()-1; ++i){
-            System.out.println(l.get(i));
+            String[] cols = l.get(i).split("\\s+");
+            String dayNumber = cols[1];
+            int maxOfTheDay = Integer.parseInt(cols[2].replaceAll("[^\\d.]", ""));
+            int minOfTheDay = Integer.parseInt(cols[3].replaceAll("[^\\d.]", ""));
+
+            if(dayNumberOfMin==null){
+                min = maxOfTheDay-minOfTheDay;
+                dayNumberOfMin = dayNumber;
+            }else{
+                if(maxOfTheDay-minOfTheDay < min){
+                    min = maxOfTheDay-minOfTheDay;
+                    dayNumberOfMin = dayNumber;
+                }
+            }
         }
+
+        System.out.println(dayNumberOfMin);
     }
 
 
